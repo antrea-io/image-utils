@@ -17,8 +17,6 @@ FROM ubuntu:22.04@sha256:ac58ff7fe25edc58bdf0067ca99df00014dbd032e2246d30a722fa3
 LABEL maintainer="Antrea <projectantrea-dev@googlegroups.com>"
 LABEL description="A Docker image with useful tools (for networking) based on Ubuntu"
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 # Keep it in lexicographic order
 ENV TOOLS apache2-utils \
           arping \
