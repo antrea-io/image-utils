@@ -20,3 +20,13 @@ updates:
       # this should update the image sha, but not the tag
       - dependency-name: ubuntu
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
+  - package-ecosystem: "docker"
+    directory: "/images/test-2"
+    registries:
+      - dockerhub # Allow version updates for dependencies in this registry
+    schedule:
+      interval: "daily"
+    ignore:
+      # this should update the image sha, but not the tag
+      - dependency-name: ubuntu
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
