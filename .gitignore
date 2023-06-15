@@ -1,0 +1,14 @@
+.DS_Store
+
+# VIM
+.*.swp
+
+# Emacs
+*~
+
+# Common backup files
+*.bak
+
+.idea/
+.vscode/
+vendor
