@@ -28,5 +28,5 @@ updates:
       interval: "daily"
     ignore:
       # this should update the image sha, but not the tag
-      - dependency-name: ubuntu
+      - dependency-name: antrea/antrea-ubuntu
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
