@@ -13,7 +13,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/images/toolbox"
     registries:
-      - dockerhub # Allow version updates for dependencies in this registry
+      - dockerhub
     schedule:
       interval: "daily"
     ignore:
@@ -23,7 +23,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/images/test-2"
     registries:
-      - dockerhub # Allow version updates for dependencies in this registry
+      - dockerhub
     schedule:
       interval: "daily"
     ignore:
