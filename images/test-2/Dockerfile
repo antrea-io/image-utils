@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM antrea/antrea-ubuntu:latest@sha256:2c529f71d486f972b3aa59c0e290403a57f0719138be2fa0d9b66626565f9e50
+FROM antrea/antrea-ubuntu:latest@sha256:30b57dd217240d140559ce3d86a116438fd5285b1df71493cb34ec20de09332f
 
 LABEL maintainer="Antrea <projectantrea-dev@googlegroups.com>"
 LABEL description="Test image"
