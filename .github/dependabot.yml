@@ -8,3 +8,9 @@ updates:
       # this should update the image sha, but not the tag
       - dependency-name: ubuntu
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
+  - package-ecosystem: "github-actions"
+    # Workflow files stored in the default location of `.github/workflows`
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
