@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'images/lichen/**'
+      - '.github/workflows/docker_build_lichen.yml'
   push:
     branches:
       - main
