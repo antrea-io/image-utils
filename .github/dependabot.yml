@@ -1,26 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
-    directory: "/images/test"
-    schedule:
-      interval: "daily"
-    ignore:
-      # this should update the image sha, but not the tag
-      - dependency-name: ubuntu
-        update-types: ["version-update:semver-major", "version-update:semver-minor"]
-  - package-ecosystem: "docker"
     directory: "/images/toolbox"
     schedule:
       interval: "daily"
     ignore:
       # this should update the image sha, but not the tag
       - dependency-name: ubuntu
-        update-types: ["version-update:semver-major", "version-update:semver-minor"]
-  - package-ecosystem: "docker"
-    directory: "/images/test-2"
-    schedule:
-      interval: "daily"
-    ignore:
-      # this should update the image sha, but not the tag
-      - dependency-name: antrea/antrea-ubuntu
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
