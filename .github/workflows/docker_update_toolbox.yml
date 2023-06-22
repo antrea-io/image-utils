@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'images/toolbox/**'
+      - '.github/workflows/docker_update_toolbox.yml'
   push:
     branches:
       - main
