@@ -36,6 +36,7 @@ jobs:
         if [ "${{ github.event.inputs.lichen-version }}" != "" ]; then
           args=$(echo "$args" | jq '. += ["LICHEN_VERSION=${{ github.event.inputs.lichen-version }}"]')
         fi
+        args=$(echo "$args" | jq @json)
         echo "docker_build_args=${args}" >> $GITHUB_ENV
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
