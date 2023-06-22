@@ -36,8 +36,14 @@ jobs:
         if [ "${{ github.event.inputs.lichen-version }}" != "" ]; then
           args=$(echo "$args" | jq '. += ["LICHEN_VERSION=${{ github.event.inputs.lichen-version }}"]')
         fi
-        args=$(echo "$args" | jq @json)
-        echo "docker_build_args=${args}" >> $GITHUB_ENV
+        # get the format expected by docker/build-push-action for the build-args input
+        args=$(echo "$args" | jq -r '.[]')
+        # multiline env string
+        # see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
+        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+        echo "docker_build_args<<$EOF" >> "$GITHUB_ENV"
+        echo "$args" >> "$GITHUB_ENV"
+        echo "$EOF" >> "$GITHUB_ENV"
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     - name: Set up Docker Buildx
@@ -52,7 +58,8 @@ jobs:
       with:
         context: images/lichen
         platforms: linux/amd64 # no need for other platforms
-        build-args: ${{ fromJSON(env.docker_build_args) }}
+        build-args: |
+          ${{ env.docker_build_args }}
         push: true
         tags: antoninbas/antrea-lichen:${{ github.event.inputs.docker-tag }}
         no-cache: true
