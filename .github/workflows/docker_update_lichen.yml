@@ -1,7 +1,7 @@
 # Anyone with write permissions to the antrea-io/antrea-image-utis Github
 # repository can trigger this workflow manually, but please check with a
 # maintainer first.
-name: Update antoninbas/antrea-lichen Docker image
+name: Update antrea/lichen Docker image
 
 on:
   workflow_dispatch:
@@ -61,5 +61,5 @@ jobs:
         build-args: |
           ${{ env.docker_build_args }}
         push: true
-        tags: antoninbas/antrea-lichen:${{ github.event.inputs.docker-tag }}
+        tags: antrea/lichen:${{ github.event.inputs.docker-tag }}
         no-cache: true

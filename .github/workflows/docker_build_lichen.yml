@@ -1,4 +1,4 @@
-name: Build antoninbas/antrea-lichen Docker image
+name: Build antrea/lichen Docker image
 
 on:
   pull_request:
@@ -31,5 +31,5 @@ jobs:
         context: images/lichen
         platforms: linux/amd64 # no need for other platforms
         push: false
-        tags: antoninbas/antrea-lichen:latest
+        tags: antrea/lichen:latest
         no-cache: true
