@@ -17,3 +17,4 @@ Here is a changelog for the different versions of this image:
 | Tag             | Change                                                     |
 | :---------------| ---------------------------------------------------------- |
 | 1.0             | Initial version.                                           |
+| 1.1             | Use pause as the default command.                          |
