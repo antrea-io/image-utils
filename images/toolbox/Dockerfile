@@ -48,3 +48,14 @@ RUN apt-get update && \
     /iptables-wrapper-installer.sh --no-sanity-check
 
 COPY VERSION /VERSION
+
+# Use K8s pause binary as the default command.
+# This is convenient when using this Docker image to run a K8s Pod which is meant to be exec'ed
+# into, as there is no need to specify an explicit command when deploying the Pod.
+# "pause" is superior to a simple "sleep infinity", as it handled signals correctly.
+# We use the "latest" tag, and the binary will be updated (if needed) every time this image is
+# re-built.
+# Note that pause is a static binary.
+COPY --from=registry.k8s.io/pause:latest /pause /pause
+
+CMD ["/pause"]
