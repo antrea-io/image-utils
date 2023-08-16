@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:22.04@sha256:0bced47fffa3361afa981854fcabcd4577cd43cebbb808cea2b1f33a3dd7f508
+FROM ubuntu:22.04@sha256:ec050c32e4a6085b423d36ecd025c0d3ff00c38ab93a3d71a460ff1c44fa6d77
 
 LABEL maintainer="Antrea <projectantrea-dev@googlegroups.com>"
 LABEL description="A Docker image with useful tools (for networking) based on Ubuntu"
