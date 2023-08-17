@@ -18,3 +18,4 @@ Here is a changelog for the different versions of this image:
 | :---------------| ---------------------------------------------------------- |
 | 1.0             | Initial version.                                           |
 | 1.1             | Use pause as the default command.                          |
+| 1.2             | Add netperf to image.                                      |
