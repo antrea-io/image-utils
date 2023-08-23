@@ -29,6 +29,7 @@ ENV TOOLS apache2-utils \
           iptables \
           iputils-ping \
           ncat \
+          netperf \
           nmap \
           socat \
           tcpdump \
