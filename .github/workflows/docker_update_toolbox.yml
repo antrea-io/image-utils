@@ -13,23 +13,42 @@ on:
     paths:
       - 'images/toolbox/**'
 
+env:
+  REGISTRY_IMAGE: "antrea/toolbox"
+
 jobs:
-  build:
+  get-docker-tag:
     runs-on: ubuntu-latest
     steps:
     - name: Check-out code
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - name: Set docker tag
+    - name: Get docker tag
+      id: get-outputs
       working-directory: images/toolbox
       run: |
         version=$(head -n 1 VERSION)
         version_update_sha=$(git log -n 1 --pretty=format:%H -- VERSION)
         rev=$(git rev-list --count ${version_update_sha}..HEAD -- .)
-        echo "version=${version}" >> $GITHUB_ENV
-        echo "rev=${rev}" >> $GITHUB_ENV
-        echo "docker_tag=${version}-${rev}" >> $GITHUB_ENV
+        echo "version=${version}" >> $GITHUB_OUTPUT
+        echo "rev=${rev}" >> $GITHUB_OUTPUT
+        echo "docker_tag=${version}-${rev}" >> $GITHUB_OUTPUT
+    outputs:
+      version: ${{ steps.get-outputs.outputs.version }}
+      rev: ${{ steps.get-outputs.outputs.rev }}
+      docker_tag: ${{ steps.get-outputs.outputs.docker_tag }}
+
+  build-linux:
+    runs-on: ubuntu-latest
+    needs: get-docker-tag
+    env:
+      DOCKER_TAG: ${{ needs.get-docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Check-out code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
     - name: Set up Docker Buildx
@@ -41,11 +60,63 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and push Docker image
+      id: build
       uses: docker/build-push-action@v5
       with:
         context: images/toolbox
         platforms: linux/amd64,linux/arm64,linux/arm/v7
         push: ${{ github.repository == 'antrea-io/image-utils' && github.event_name != 'pull_request' }}
-        # first tag should be immutable, others are rolling tags
-        tags: antrea/toolbox:${{ env.docker_tag }},antrea/toolbox:${{ env.version }},antrea/toolbox:latest
+        tags: ${{ env.REGISTRY_IMAGE }}:${{ env.DOCKER_TAG }}-linux
         no-cache: true
+
+  build-windows:
+    runs-on: windows-latest
+    needs: get-docker-tag
+    env:
+      DOCKER_TAG: ${{ needs.get-docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Check-out code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Build Docker images
+      shell: bash
+      run: |
+        docker build -t ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows-ltsc2022 -f images/toolbox/Dockerfile-windows --build-arg WINDOWS_VERSION=ltsc2022 images/toolbox
+        docker build -t ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows-1809 -f images/toolbox/Dockerfile-windows --build-arg WINDOWS_VERSION=1809 images/toolbox
+    - name: Login to DockerHub
+      if: ${{ github.repository == 'antrea-io/image-utils' && github.event_name != 'pull_request' }}
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Create and push manifest list
+      if: ${{ github.repository == 'antrea-io/image-utils' && github.event_name != 'pull_request' }}
+      shell: bash
+      run: |
+        docker push ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows-ltsc2022
+        docker push ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows-1809
+        docker manifest create ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows-ltsc2022 ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows-1809
+        docker manifest push ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows
+
+  manifest:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'antrea-io/image-utils' && github.event_name != 'pull_request' }}
+    needs: [get-docker-tag, build-linux, build-windows]
+    env:
+      DOCKER_CLI_EXPERIMENTAL: enabled
+      DOCKER_TAG: ${{ needs.get-docker-tag.outputs.docker_tag }}
+      VERSION: ${{ needs.get-docker-tag.outputs.version }}
+    steps:
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Create and push manifest list
+      run: |
+        # first tag should be immutable, others are rolling tags
+        docker buildx imagetools create -t ${REGISTRY_IMAGE}:${DOCKER_TAG} -t ${REGISTRY_IMAGE}:${VERSION} -t ${REGISTRY_IMAGE}:latest ${REGISTRY_IMAGE}:${DOCKER_TAG}-linux ${REGISTRY_IMAGE}:${DOCKER_TAG}-windows
+    - name: Inspect manifest list
+      run: |
+        docker buildx imagetools inspect ${REGISTRY_IMAGE}:${DOCKER_TAG}
