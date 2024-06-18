@@ -61,7 +61,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and push Docker image
       id: build
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: images/toolbox
         platforms: linux/amd64,linux/arm64,linux/arm/v7
