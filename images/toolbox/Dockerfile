@@ -28,6 +28,7 @@ ENV TOOLS apache2-utils \
           iproute2 \
           iptables \
           iputils-ping \
+          kmod \
           ncat \
           netperf \
           nmap \
