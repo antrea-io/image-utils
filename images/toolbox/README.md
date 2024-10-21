@@ -21,3 +21,4 @@ Here is a changelog for the different versions of this image:
 | 1.2             | Add netperf to image.                                      |
 | 1.3             | Add Windows support.                                       |
 | 1.4             | Add kmod to image.                                         |
+| 1.5             | Update Linux base image to ubuntu:24.04.                   |
