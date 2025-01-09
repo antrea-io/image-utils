@@ -26,6 +26,7 @@ ENV TOOLS apache2-utils \
           ethtool \
           iperf3 \
           iproute2 \
+          ipset \
           iptables \
           iputils-ping \
           kmod \
