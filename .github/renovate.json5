@@ -1,0 +1,37 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:base",
+    ":gitSignOff", // Add commit Sign-Off for renovate commits
+  ],
+
+  // Allow only certain package managers and implicitly disable all others
+  enabledManagers: ["dockerfile", "github-actions"],
+
+  baseBranches: ["main"],
+  prConcurrentLimit: 5,
+  prHourlyLimit: 0,
+
+  labels: ["dependencies"],
+
+  packageRules: [
+    {
+      matchManagers: ["dockerfile"],
+      matchFileNames: ["images/toolbox/*"],
+      addLabels: ["docker"],
+    },
+
+    // this should update the image sha, but not the tag
+    {
+      matchManagers: ["dockerfile"],
+      matchPackageNames: ["ubuntu"],
+      matchUpdateTypes: ["major", "minor"],
+      enabled: false,
+    },
+
+    {
+      matchManagers: ["github-actions"],
+      addLabels: ["github_actions"],
+    },
+  ],
+}
