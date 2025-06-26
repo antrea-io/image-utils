@@ -14,6 +14,11 @@
 
   labels: ["dependencies"],
 
+  // Only make PRs for security vulnerability alerts
+  vulnerabilityAlerts: {
+    enabled: true,
+  },
+
   packageRules: [
     {
       matchManagers: ["dockerfile"],
