@@ -23,7 +23,8 @@
     {
       matchManagers: ["dockerfile"],
       enabled: false,
-    }
+    },
+
     {
       matchManagers: ["dockerfile"],
       matchFileNames: ["images/toolbox/*"],
