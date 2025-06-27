@@ -14,7 +14,7 @@
 
   labels: ["dependencies"],
 
-  // Only make PRs for security vulnerability alerts
+  // Enabling security updates based on GitHub's Dependabot-style security alerts
   vulnerabilityAlerts: {
     enabled: true,
   },
