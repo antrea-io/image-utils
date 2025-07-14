@@ -57,6 +57,6 @@ COPY VERSION /VERSION
 # into, as there is no need to specify an explicit command when deploying the Pod.
 # "pause" is superior to a simple "sleep infinity", as it handled signals correctly.
 # Note that pause is a static binary.
-COPY --from=registry.k8s.io/pause:3.9 /pause /pause
+COPY --from=registry.k8s.io/pause:3.10 /pause /pause
 
 CMD ["/pause"]
