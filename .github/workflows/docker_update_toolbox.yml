@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check-out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - name: Get docker tag
@@ -46,7 +46,7 @@ jobs:
       DOCKER_TAG: ${{ needs.get-docker-tag.outputs.docker_tag }}
     steps:
     - name: Check-out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - name: Set up QEMU
@@ -76,7 +76,7 @@ jobs:
       DOCKER_TAG: ${{ needs.get-docker-tag.outputs.docker_tag }}
     steps:
     - name: Check-out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - name: Build Docker images
