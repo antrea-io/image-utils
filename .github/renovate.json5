@@ -30,7 +30,6 @@
       matchManagers: ["dockerfile"],
       matchFileNames: ["images/toolbox/*"],
       addLabels: ["docker"],
-      enabled: true,
     },
 
     // this should update the image sha, but not the tag
