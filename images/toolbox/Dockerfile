@@ -36,6 +36,7 @@ ENV TOOLS apache2-utils \
           socat \
           tcpdump \
           telnet \
+          tini \
           traceroute \
           wget
 
