@@ -6,7 +6,7 @@
   ],
 
   // Allow only certain package managers and implicitly disable all others
-  enabledManagers: ["dockerfile", "github-actions"],
+  enabledManagers: ["dockerfile", "github-actions", "custom.regex"],
 
   baseBranches: ["main"],
   prConcurrentLimit: 5,
@@ -18,6 +18,19 @@
   vulnerabilityAlerts: {
     enabled: true,
   },
+
+  customManagers: [
+    {
+      customType: "regex",
+      managerFilePatterns: ["images/tshark/Dockerfile"],
+      matchStrings: [
+        "apt-get install.*?tshark=(?<currentValue>[^\\s&]+)",
+      ],
+      depNameTemplate: "tshark",
+      datasourceTemplate: "deb",
+      registryUrlTemplate: "https://archive.ubuntu.com/ubuntu?suite=noble&components=main,universe&binaryArch=amd64",
+    },
+  ],
 
   packageRules: [
     // Limiting Docker updates to certain path
@@ -33,12 +46,26 @@
       enabled: true,
     },
 
+    {
+      matchManagers: ["dockerfile"],
+      matchFileNames: ["images/tshark/*"],
+      addLabels: ["docker"],
+      enabled: true,
+    },
+
     // this should update the image sha, but not the tag
     {
       matchManagers: ["dockerfile"],
       matchPackageNames: ["ubuntu"],
       matchUpdateTypes: ["major", "minor"],
       enabled: false,
+    },
+
+    {
+      matchManagers: ["custom.regex"],
+      matchFileNames: ["images/tshark/*"],
+      addLabels: ["docker"],
+      enabled: true,
     },
 
     {
