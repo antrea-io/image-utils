@@ -70,7 +70,12 @@ jobs:
         no-cache: true
 
   build-windows:
-    runs-on: windows-latest
+    # Pinned to windows-2025 instead of windows-latest: windows-latest now
+    # resolves to the "Windows Server 2025 with Visual Studio 2026" image, in
+    # which the Docker daemon is not running, so builds fail with:
+    #   failed to connect to the docker API at npipe:////./pipe/docker_engine
+    # See https://github.com/actions/runner-images/issues/14572
+    runs-on: windows-2025
     needs: get-docker-tag
     env:
       DOCKER_TAG: ${{ needs.get-docker-tag.outputs.docker_tag }}
