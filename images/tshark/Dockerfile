@@ -27,7 +27,7 @@ LABEL description="A Docker image with tshark based on Ubuntu"
 # must still be granted at runtime via the Pod securityContext for captures to work.
 # debconf-utils is purged after use to keep the image size small.
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends debconf-utils tshark=4.2.2-1.1build3 && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends debconf-utils tshark=4.4.18-0+deb13u1 && \
     echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections && \
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure wireshark-common && \
     DEBIAN_FRONTEND=noninteractive apt-get purge -y debconf-utils && \
