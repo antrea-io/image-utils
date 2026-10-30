@@ -64,7 +64,7 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: images/toolbox
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        platforms: linux/amd64,linux/arm64
         push: ${{ github.repository == 'antrea-io/image-utils' && github.event_name != 'pull_request' }}
         tags: ${{ env.REGISTRY_IMAGE }}:${{ env.DOCKER_TAG }}-linux
         no-cache: true

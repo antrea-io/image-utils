@@ -24,3 +24,4 @@ Here is a changelog for the different versions of this image:
 | 1.5             | Update Linux base image to ubuntu:24.04.                   |
 | 1.6             | Add ipset to Linux image.                                  |
 | 1.7             | Add tini to Linux image.                                   |
+| 1.8             | Drop linux/arm/v7 support.                                 |
